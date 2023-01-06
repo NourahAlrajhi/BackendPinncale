@@ -37,7 +37,7 @@ app.use((req, res, next) => {
   next()
 })
 
-
+///Adding some comment to check the connection
 
 app.use(function (req, res, next) {
   let allowedOrigins = ["https://pinnacle-recruiting.herokuapp.com/"];
