@@ -22,8 +22,9 @@ var multer = require('multer');
 // express app
 const app = express()
 app.use(cors());
+
 //static folder patha
-app.use(express.static(path.resolve(__dirname, 'public')));
+//app.use(express.static(path.resolve(__dirname, 'public')));
 
 
 app.set('view engine', 'ejs')
