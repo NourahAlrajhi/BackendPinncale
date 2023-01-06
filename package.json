@@ -20,6 +20,9 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
+  "engines": {
+    "node": "16.x"
+  },
   "name": "backend",
   "version": "1.0.0",
   "main": "Connection.js",
@@ -28,3 +31,4 @@
   "license": "ISC",
   "description": ""
 }
+
