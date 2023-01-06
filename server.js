@@ -39,6 +39,22 @@ app.use((req, res, next) => {
 
 
 
+app.use(function (req, res, next) {
+  let allowedOrigins = ["https://pinnacle-recruiting.herokuapp.com/"];
+  let origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+  }
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Key, x-auth-token, multipart/form-data"
+  );
+  res.header(
+    "Access-Control-Allow-Methods",
+    "PUT, POST, GET, DELETE, OPTIONS"
+  );
+next();
+})
 
 // routes
 app.use('/api/Position', Position)
