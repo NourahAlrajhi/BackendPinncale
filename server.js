@@ -27,7 +27,8 @@ app.use(cors());
 //app.use(express.static(path.resolve(__dirname, 'public')));
 
 
-app.set('view engine', 'ejs')
+//app.set('view engine', 'ejs')
+
 // middleware
 app.use(express.json())
 
@@ -36,9 +37,7 @@ app.use((req, res, next) => {
   next()
 })
 
-app.get("/", function (req,res) {
-res.send("Response from the GET request")
-});
+
 
 
 // routes
@@ -49,13 +48,13 @@ app.use('/api/Candidate', Candidate)
 
 
 // connect to db
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    // listen for requests
-    app.listen(process.env.PORT, () => {
-      console.log('connected to db & listening on port', process.env.PORT)
-    })
+mongoose.connect(process.env.MONGO_URI);
+
+
+  // listen for requests
+  app.listen(process.env.PORT, () => {
+    console.log('connected to db & listening on port', process.env.PORT)
   })
-  .catch((error) => {
-    console.log(error)
-  })
+
+
+
