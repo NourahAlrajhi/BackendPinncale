@@ -140,6 +140,7 @@ router.post('/UPLOAD', upload.single('uploadfile'), async (req, res) => {
         const payload = data.map((item, index) => {
             return {
                 id: index + 1,
+                RECORDS:[{}],
                 ...item
             }
         });

@@ -26,7 +26,6 @@ app.use(cors());
 //static folder patha
 //app.use(express.static(path.resolve(__dirname, 'public')));
 
-
 //app.set('view engine', 'ejs')
 
 // middleware
