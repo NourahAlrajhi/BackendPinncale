@@ -13,7 +13,6 @@ const RecruitereModel = require('./models/Recruiters')
 
 const VacancyModel = require('./models/Vacancy')
 const requireAuth = require('./middleware/requireAuth')
-
 const csvtojson = require('csvtojson')
 
 const cors = require('cors')
@@ -27,7 +26,6 @@ app.use(cors());
 //app.use(express.static(path.resolve(__dirname, 'public')));
 
 //app.set('view engine', 'ejs')
-
 // middleware
 app.use(express.json())
 

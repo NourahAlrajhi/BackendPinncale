@@ -141,6 +141,7 @@ router.post('/UPLOAD', upload.single('uploadfile'), async (req, res) => {
             return {
                 id: index + 1,
                 RECORDS:[{}],
+                Result:"Not Attended",
                 ...item
             }
         });

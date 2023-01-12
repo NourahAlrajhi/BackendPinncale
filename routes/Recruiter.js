@@ -63,7 +63,8 @@ var upload = multer({ storage: storage });
 
 
 // Upload User Image
-router.post("/InterviewVideo/:CandidateDocID/:CandidateID", /*upload2.array("CandidateInterview", 10),*/upload.single("CandidateInterview"), async (req, res) => {
+router.post("/InterviewVideo/:CandidateDocID/:CandidateID/:QuestionID", /*upload2.array("CandidateInterview", 10),*/upload.single("CandidateInterview"), async (req, res) => {
+    const { QuestionID } = req.params
     console.log(req.file)
     const { CandidateDocID } = req.params
     const { CandidateID } = req.params
@@ -82,7 +83,7 @@ router.post("/InterviewVideo/:CandidateDocID/:CandidateID", /*upload2.array("Can
             },
             {
                 $push: {
-                    "Candidate_Info.$[orderItem].RECORDS": { imageUrl: data.url, publicId: data.public_id }
+                    "Candidate_Info.$[orderItem].RECORDS": { imageUrl: data.url, publicId: data.public_id ,QuestionAndAnswerID:QuestionID}
                 }
             },
             {
@@ -95,6 +96,9 @@ router.post("/InterviewVideo/:CandidateDocID/:CandidateID", /*upload2.array("Can
         if (CandidateALLINFO) {
             console.log(CandidateALLINFO)
             console.log("Candidate Interviewwwww imported successfully.");
+            return res.status(400).json({ message: 'Alllll Done for the storing in cloudinary' })
+
+           // res.status(200).json("Alllll Done for the storing in cloudinary")
         }
         console.log(data.url)
         console.log("222222222...............2222222222");
@@ -103,7 +107,7 @@ router.post("/InterviewVideo/:CandidateDocID/:CandidateID", /*upload2.array("Can
         console.log("222222222...............2222222222");
 
         console.log("Candidate Interview uploaded with success!");
-        res.status(200).json("Alllll Done for the storing in cloudinary")
+     
     } catch (error) {
         console.log(error)
         res.status(400).send(error);
