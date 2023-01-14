@@ -91,7 +91,7 @@ router.post("/InterviewVideo/:CandidateDocID/:CandidateID/:QuestionID/:VacancyID
             },
             {
                 arrayFilters: [{
-                    "orderItem.id": num,
+                    "orderItem.id": CandidateID,
                 }]
             }
         )
