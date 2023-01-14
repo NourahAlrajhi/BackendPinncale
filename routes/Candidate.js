@@ -6,11 +6,11 @@ const RecruitersrRoutes = require('../routes/Recruiter')
 const Candidate = require('../routes/Candidate')
 const CandidateModel = require('../models/Candidate')
 const RecruitereModel = require('../models/Recruiters')
-
+const { v4: uuidv4 } = require('uuid');
 const VacancyModel = require('../models/Vacancy')
 const express = require('express')
 const {
-    getAllCandidate, createCandidate, getSingleCandidate, getSendEmail, getSingleCandidatInfo, WelcomeInterviewPageForeCandidate
+    getAllCandidate, createCandidate, getSingleCandidate, getSendEmail, getSingleCandidatInfo, WelcomeInterviewPageForeCandidate,GetExcelSheetForThisVacancy
 } = require('../controllers/CandidateController')
 const { AddCandidateToVacancy, getVacancy, deleteVacancy, getSingleVacancy, getSingleVacancyName, getOpenVacancy, getCandidateLength, ChangeClosedVacancyStatus, UpdateVacanyStatusToClosed, getClosedVacancy, EnetrVacancyInfo, EnetrVacancyInfoForeQuestion } = require('../controllers/VacancyController')
 
@@ -57,7 +57,7 @@ router.delete('/:id', deleteVacancy)
 router.get('/:id', getSingleVacancy)
 
 router.post('/sendEmail', getSendEmail)
-
+router.post('/GetExcelSheetForThisVacancy' ,GetExcelSheetForThisVacancy)
 
 //GET a /CandidateLength
 router.get('/CandidateLength/:id', getCandidateLength)
@@ -136,10 +136,10 @@ router.post('/UPLOAD', upload.single('uploadfile'), async (req, res) => {
         //drop those first two rows which are empty
         data.shift();
         data.shift();
-
+//v4()
         const payload = data.map((item, index) => {
             return {
-                id: index + 1,
+                id: uuidv4()/*index + 1*/,
                 RECORDS:[{}],
                 Result:"Not Attended",
                 ...item

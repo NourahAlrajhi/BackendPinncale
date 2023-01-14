@@ -5,10 +5,11 @@ const Recruiter = require('../models/Recruiters')
 const Vacancy = require('../models/Vacancy')
 const Candidate = require('../models/Candidate')
 const mongoose = require('mongoose')
+var json2xlsx = require('node-json-xlsx');
 const { MongoClient } = require('mongodb');
 const nodeMailer = require('nodemailer');
 const client = new MongoClient(process.env.MONGO_URI);
-
+var fs = require("fs");
 
 //multer
 var storage = multer.diskStorage({
@@ -104,7 +105,7 @@ const getSendEmail = async (req, res) => {
 
     console.log("req body", req.body);
 
-    const { /*CandidateEmail*/ CandidateALLINFO, EmailBody, EmailSubject, e ,PositionChoosen,Datee,Time,CandidateDocId} = req.body
+    const { /*CandidateEmail*/ CandidateALLINFO, EmailBody, EmailSubject, e, PositionChoosen, Datee, Time, CandidateDocId } = req.body
 
 
     // let userMail = req.body.CandidateEmail;
@@ -144,7 +145,7 @@ const getSendEmail = async (req, res) => {
             <h4>The interview will last between 10 - 30 minuts in total.</h4>\
             <h4>Please note that the link will expire on the following date and time:</h4>\
             <h4>Date : ${(new Date(Datee).getDate()) + "/" + (new Date(Datee).getMonth() + 1) + "/" + (new Date(Datee).getFullYear())}</h4>\
-            <h4>Time : ${(new Date(Datee).getHours()) + ":" + (new Date(Datee).getMinutes()) }</h4>\
+            <h4>Time : ${(new Date(Datee).getHours()) + ":" + (new Date(Datee).getMinutes())}</h4>\
 
             ` ,
         };
@@ -198,11 +199,54 @@ const WelcomeInterviewPageForeCandidate = async (req, res) => {
     res.status(200).json(Candidatess)
 }
 
+const GetExcelSheetForThisVacancy = async (req, res) => {
+    console.log("Enterrrrr GetExcelSheetForThisVacancy!!!");
+    const { CandidatInfo } = req.body
+    const { VACANCYNAME } = req.body
+    /*const filtered = CandidatInfo.map(obj => {
+        console.log(obj);
+
+        // get totals to add them later to keep column order (or use `header` param for columns order)
+        const {
+            RECORDS,
+            Candidate_Name,
+            Candidate_Email,
+            ...rest
+        } = obj;
+    
+        // flatten..
+        RECORDS.map(el => {
+            rest[el['InterviewUrl']] = el.imageUrl;
+        });
+    
+        return {...rest,
+            Candidate_Name,
+            Candidate_Email
+        };
+    });*/
+
+
+   
+
+
+    const workSheet = XLSX.utils.json_to_sheet(CandidatInfo);
+    const workBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workBook, workSheet, "Candidates");
+    XLSX.write(workBook, { bookType: "xlsx", type: "buffer" });
+    XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
+    XLSX.writeFile(workBook,`${VACANCYNAME}.xlsx`);
+
+    res.status(200).json("Excel loadedddddddd")
+
+
+}
+
 module.exports = {
     getAllCandidate,
     createCandidate,
     getSingleCandidate,
     getSendEmail,
     getSingleCandidatInfo,
-    WelcomeInterviewPageForeCandidate
+    WelcomeInterviewPageForeCandidate,
+    GetExcelSheetForThisVacancy
 }

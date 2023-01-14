@@ -72,6 +72,10 @@ const VacancySchema = new Schema({
         CandidateList: {
             type: String,
         },
+        InterviewedCandidates: {
+            type: Number,
+            required: true
+        },
         user_id: {
             type: String,
             required: true

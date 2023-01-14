@@ -65,7 +65,7 @@ const createVacancy = async (req, res) => {
 
             console.log("Enterrrrrrrrrrrr here0000000 opennnnnnnnn")
 
-            let newMessage = new Vacancy({ Position: Positionnn, title: titleee, Esubject: Esubjecttt, Ebody: Ebodyyy, linkExpDate: linkExpDateee, linkExpTime: linkExpTimeee, status: statusss, user_id });
+            let newMessage = new Vacancy({ Position: Positionnn, title: titleee, Esubject: Esubjecttt, Ebody: Ebodyyy, linkExpDate: linkExpDateee, linkExpTime: linkExpTimeee, status: statusss, user_id,InterviewedCandidates:0 });
             console.log(Positionnn)
             console.log(titleee)
             console.log(statusss)
@@ -125,7 +125,7 @@ const createVacancy = async (req, res) => {
 
             console.log("Enterrrrrrrrrrrr here0000000")
 
-            let newMessage = new Vacancy({ Position, title, Esubject, Ebody, linkExpDate, linkExpTime, status, user_id });
+            let newMessage = new Vacancy({ Position, title, Esubject, Ebody, linkExpDate, linkExpTime, status, user_id,InterviewedCandidates:0 });
             console.log(Position)
             console.log(title)
             console.log(Esubject)
