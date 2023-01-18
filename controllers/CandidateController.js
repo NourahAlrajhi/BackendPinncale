@@ -145,7 +145,7 @@ const getSendEmail = async (req, res) => {
             <h4>The interview will last between 10 - 30 minuts in total.</h4>\
             <h4>Please note that the link will expire on the following date and time:</h4>\
             <h4>Date : ${(new Date(Datee).getDate()) + "/" + (new Date(Datee).getMonth() + 1) + "/" + (new Date(Datee).getFullYear())}</h4>\
-            <h4>Time : ${(new Date(Datee).getHours()) + ":" + (new Date(Datee).getMinutes())}</h4>\
+            <h4>Time : ${(new Date(Datee).getHours()+3) + ":" + (new Date(Datee).getMinutes())}</h4>\
 
             ` ,
         };
