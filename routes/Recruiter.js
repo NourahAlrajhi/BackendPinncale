@@ -9,7 +9,7 @@ const CandidateModel = require('../models/Candidate')
 
 const { uploadToCloudinary, removeFromCloudinary } = require('../services/cloudinary')
 // controller functions
-const { loginRecruiter, signupRecruiter } = require('../controllers/Recruiters')
+const { loginRecruiter, signupRecruiter ,signupAdmin,loginAdmin} = require('../controllers/Recruiters')
 const { AddRecruiterJobVscancy, createVacancy } = require('../controllers/VacancyController')
 const router = express.Router()
 const cloudinary = require("cloudinary").v2;
@@ -29,6 +29,12 @@ router.post('/login', loginRecruiter)
 
 // signup route
 router.post('/signup', signupRecruiter)
+
+// login Admin route
+router.post('/login/Admin', loginAdmin)
+
+// signup Admin route
+router.post('/signup/Admin', signupAdmin)
 
 //GET a  WelcomeInterviewPageForeCandidate
 router.get('/WelcomeInterviewPageForeCandidate/:CandidateDocID', WelcomeInterviewPageForeCandidate)
