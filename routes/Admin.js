@@ -24,7 +24,8 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 
-router.post('/UPLOADMPLOYEE', upload.single('uploadfile'), async (req, res) => {
+router.post('/UPLOADMPLOYEE/:EMPLOYEEID', upload.single('uploadfile'), async (req, res) => {
+    const { EMPLOYEEID } = req.params
     console.log("===========================222222 Enter UPLOADMPLOYEE")
     const user_id = req.Admin._id
     console.log(user_id)
@@ -75,19 +76,70 @@ router.post('/UPLOADMPLOYEE', upload.single('uploadfile'), async (req, res) => {
 
         const payload = data.map((item, index) => {
             return {
-               IsAuth:false,
+                IsAuth: false,
                 ...item
             }
         });
+        let flag = false
+        let count = 0
         console.log(payload);
+        let ISEXIST = await Employees.findById(EMPLOYEEID);
+        payload && payload.map(async (data, i) => {
+          
+            console.log("[[[[[[[[[[[[")
+            console.log(ISEXIST.Employee_Info)
+            console.log("[[[[[[[[[[[[")
 
-        let EmployeeList = new Employees({ Employee_Info: payload });
-        EmployeeList = await EmployeeList.save();
+            ISEXIST.Employee_Info && ISEXIST.Employee_Info.map(async (ITEM, index) => {
+                if (ITEM.Employee_ID === data.Employee_ID) {
+                    console.log("enter the flag condition")
+                    console.log(ITEM.Employee_ID )
+                    console.log(data.Employee_ID)
+                    flag = false
+                    count++
+                }else if(ITEM.Employee_ID !== data.Employee_ID){
+                    console.log("enter the flag condition true")
+                    console.log(ITEM.Employee_ID )
+                    console.log(data.Employee_ID)
+                    flag = true 
+                   
+                }
 
-        if (EmployeeList) {
-            console.log("EmployeeList imported successfully.");
-        }
-        res.status(200).json(EmployeeList)
+
+
+            })
+            if( count>0){
+                flag = false   
+                count=0
+            }
+
+            if (flag) {
+                const EmployeesALLINFO = await Employees.findOneAndUpdate(
+                    {
+                        _id: EMPLOYEEID,
+                    },
+                    {
+                        $push: {
+                            "Employee_Info": { IsAuth: false, Employee_Name: data.Employee_Name, Employee_ID: data.Employee_ID, Employee_UserName: data.Employee_UserName, Employee_Password: data.Employee_Password }
+                        }
+                    },
+
+                )
+            }
+
+
+
+        })
+
+
+
+        // let EmployeeList = new Employees({ Employee_Info: payload });
+        // EmployeeList = await EmployeeList.save();
+
+        /* if (EmployeeList) {
+             console.log("EmployeeList imported successfully.");
+         }*/
+        res.status(200).json("Add the EmployeeList succ")
 
         console.log("Add the EmployeeList succ");
     });
@@ -100,7 +152,7 @@ router.post('/UPLOADMPLOYEE', upload.single('uploadfile'), async (req, res) => {
 
 )
 
-router.get("/ListEmployee",async (req, res) => {
+router.get("/ListEmployee", async (req, res) => {
 
     const ListEmployee = await Employees.find({}).sort({ createdAt: -1 })
     console.log("gott allllll ListEmployee");
@@ -108,9 +160,9 @@ router.get("/ListEmployee",async (req, res) => {
 })
 
 
-router.post("/RemoveAUTH/:EmployeDocIDDD",async (req, res) => {
+router.post("/RemoveAUTH/:EmployeDocIDDD", async (req, res) => {
     const { EmployeDocIDDD } = req.params
-    const { Employee_ID} = req.body
+    const { Employee_ID } = req.body
 
     console.log("Enter GIVEAUTH")
     const EmployeesALLINFO = await Employees.findOneAndUpdate(
@@ -129,7 +181,7 @@ router.post("/RemoveAUTH/:EmployeDocIDDD",async (req, res) => {
         }
     )
 
-    
+
     if (EmployeesALLINFO) {
         console.log(EmployeesALLINFO)
         console.log("EmployeesALLINFO Interviewwwww imported successfully.");
@@ -142,12 +194,12 @@ router.post("/RemoveAUTH/:EmployeDocIDDD",async (req, res) => {
 
 })
 
-router.post("/GIVEAUTH/:EmployeDocID",async (req, res) => {
-  //  const { Employee_ID } = req.params
+router.post("/GIVEAUTH/:EmployeDocID", async (req, res) => {
+    //  const { Employee_ID } = req.params
     const { EmployeDocID } = req.params
-    const { Employee_ID} = req.body
-   // let num = parseInt(Employee_ID)
-  //  console.log(num)
+    const { Employee_ID } = req.body
+    // let num = parseInt(Employee_ID)
+    //  console.log(num)
     console.log("Enter GIVEAUTH")
     const EmployeesALLINFO = await Employees.findOneAndUpdate(
         {
@@ -165,7 +217,7 @@ router.post("/GIVEAUTH/:EmployeDocID",async (req, res) => {
         }
     )
 
-    
+
     if (EmployeesALLINFO) {
         console.log(EmployeesALLINFO)
         console.log("EmployeesALLINFO Interviewwwww imported successfully.");
