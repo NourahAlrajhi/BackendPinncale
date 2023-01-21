@@ -9,7 +9,7 @@ const CandidateModel = require('../models/Candidate')
 
 const { uploadToCloudinary, removeFromCloudinary } = require('../services/cloudinary')
 // controller functions
-const { loginRecruiter, signupRecruiter ,signupAdmin,loginAdmin} = require('../controllers/Recruiters')
+const { loginRecruiter, signupRecruiter ,signupAdmin,loginAdmin,deleteRecruiter} = require('../controllers/Recruiters')
 const { AddRecruiterJobVscancy, createVacancy } = require('../controllers/VacancyController')
 const router = express.Router()
 const cloudinary = require("cloudinary").v2;
@@ -28,7 +28,7 @@ const streamifier = require('streamifier')
 router.post('/login', loginRecruiter)
 
 // signup route
-router.post('/signup', signupRecruiter)
+router.post('/signup/:Employee_ID', signupRecruiter)
 
 // login Admin route
 router.post('/login/Admin', loginAdmin)
@@ -43,6 +43,8 @@ router.get('/WelcomeInterviewPageForeCandidate/:CandidateDocID', WelcomeIntervie
 router.get('/EnetrVacancyInfo/:VacancyID', EnetrVacancyInfo)
 
 
+//GET a  EnetrVacancyInfo
+router.get('/RemoveRecruiter/:Employee_IDDD', deleteRecruiter)
 
 //GET a  EnetrVacancyInfo
 router.get('/EnetrVacancyInfoForeQuestion/:VacancyyyID', EnetrVacancyInfoForeQuestion)

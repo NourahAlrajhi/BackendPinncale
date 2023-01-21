@@ -24,12 +24,16 @@ const RecruiterSchema = new Schema({
         ref: 'Vacancy'
 
     }],
+    Employee_ID: {
+        type: String,
+        required: true
+    },
 
 }, { timestamps: true }
 
 )
 // static signup method
-RecruiterSchema.statics.signup = async function (logName, password, name) {
+RecruiterSchema.statics.signup = async function (logName, password, name, Employee_ID) {
 
     // validation
     if (!logName || !password) {
@@ -46,8 +50,8 @@ RecruiterSchema.statics.signup = async function (logName, password, name) {
 
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
-
-    const Recruiter = await this.create({ logName, password: hash, name })
+    //const STRINGNAME = RecruiterCompanyId + ''
+    const Recruiter = await this.create({ logName, password: hash, name, Employee_ID })
 
     return Recruiter
 }

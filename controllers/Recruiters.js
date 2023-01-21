@@ -51,17 +51,21 @@ const loginAdmin = async (req, res) => {
 // signup a Recruiter
 
 const signupRecruiter = async (req, res) => {
+    const { Employee_ID } = req.params
     const { logName, password, name } = req.body
-
+    console.log("[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]")
+    console.log(Employee_ID)
+    console.log("[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]")
     try {
-        const Recruiters = await Recruiter.signup(logName, password, name)
+        const Recruiters = await Recruiter.signup(logName, password, name, Employee_ID)
         // create a token
         const token = createToken(Recruiters._id)
         const RecName = Recruiters.name
         const Vavancy = Recruiters.Vacancies
         const ID = Recruiters._id
+        const IDCompany = Recruiters.RecruiterCompanyId
 
-        res.status(200).json({ logName, RecName, token, Vavancy, ID })
+        res.status(200).json({ logName, RecName, token, Vavancy, ID, IDCompany })
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
@@ -119,4 +123,21 @@ const signupAdmin = async (req, res) => {
     }
 }*/
 
-module.exports = { loginRecruiter, signupRecruiter, /*AddRecruiterJobVscancy*/ signupAdmin,loginAdmin}
+
+
+// delete a Position
+const deleteRecruiter = async (req, res) => {
+    const { Employee_IDDD } = req.params
+
+
+
+    const Position = await Recruiter.findOneAndDelete({ Employee_ID: Employee_IDDD })
+
+    if (!Position) {
+        return res.status(400).json({ error: 'No such Recruiter' })
+    }
+
+    res.status(200).json(Position)
+}
+
+module.exports = { loginRecruiter, signupRecruiter, /*AddRecruiterJobVscancy*/ signupAdmin, loginAdmin ,deleteRecruiter}

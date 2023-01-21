@@ -10,6 +10,7 @@ const RecruitersrRoutes = require('./routes/Recruiter')
 const Candidate = require('./routes/Candidate')
 const CandidateModel = require('./models/Candidate')
 const RecruitereModel = require('./models/Recruiters')
+const Admin = require('./routes/Admin')
 
 const VacancyModel = require('./models/Vacancy')
 const requireAuth = require('./middleware/requireAuth')
@@ -58,6 +59,7 @@ app.use('/api/Position', Position)
 app.use('/api/Recruiter', RecruitersrRoutes)
 app.use('/api/Question', Question)
 app.use('/api/Candidate', Candidate)
+app.use('/api/Admin', Admin)
 
 
 // connect to db
