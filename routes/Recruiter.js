@@ -154,4 +154,38 @@ router.post("/IncremntInterviewdCandidate/:CandidateDocID/:CandidateID/:VacancyI
 })
 
 
+router.get("/SetIsEnterToInterview/:CandidateDocIDDDD/:CandidateIDDDD", async (req, res) => {
+    const { CandidateDocIDDDD } = req.params
+    const { CandidateIDDDD } = req.params
+
+    console.log("Enter GIVEAUTH")
+    const CandidateModelALLINFO = await CandidateModel.findOneAndUpdate(
+        {
+            _id: CandidateDocIDDDD,
+        },
+        {
+            $set: {
+                "Candidate_Info.$[orderItem].IsStartingTheInterview": true
+            }
+        },
+        {
+            arrayFilters: [{
+                "orderItem.id": CandidateIDDDD,
+            }]
+        }
+    )
+
+
+    if (CandidateModelALLINFO) {
+        console.log(CandidateModelALLINFO)
+        console.log("CandidateModelALLINFO Interviewwwww Enterrrr imported successfully.");
+
+
+        return res.status(400).json({ message: 'Alllll Done for the Interviewwwww Enterrrr imported successfully' })
+
+    }
+
+})
+
+
 module.exports = router

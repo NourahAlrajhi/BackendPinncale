@@ -142,6 +142,7 @@ router.post('/UPLOAD', upload.single('uploadfile'), async (req, res) => {
                 id: uuidv4()/*index + 1*/,
                 RECORDS:[{}],
                 Result:"Not Attended",
+                IsStartingTheInterview:false,
                 ...item
             }
         });
