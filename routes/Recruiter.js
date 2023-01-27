@@ -4,12 +4,12 @@ var XLSX = require('xlsx');
 var multer = require('multer');
 const { v4 } = require('uuid');
 const VacancyModel = require('../models/Vacancy')
-
+//const {exec} = require('child_process')
 const CandidateModel = require('../models/Candidate')
-
+const spawn = require('child_process').spawn;
 const { uploadToCloudinary, removeFromCloudinary } = require('../services/cloudinary')
 // controller functions
-const { loginRecruiter, signupRecruiter ,signupAdmin,loginAdmin,deleteRecruiter} = require('../controllers/Recruiters')
+const { loginRecruiter, signupRecruiter, signupAdmin, loginAdmin, deleteRecruiter } = require('../controllers/Recruiters')
 const { AddRecruiterJobVscancy, createVacancy } = require('../controllers/VacancyController')
 const router = express.Router()
 const cloudinary = require("cloudinary").v2;
@@ -55,6 +55,14 @@ router.get('/EnetrVacancyInfoForeQuestion/:VacancyyyID', EnetrVacancyInfoForeQue
 //var upload2 = multer({ storage2: storage2 });
 
 
+// exec('mkfifo mypipe',(err)=>{
+//     if(err){
+//         console.error(err);
+//         return
+//     }
+//     console.log('Named pipe created')
+// });
+
 
 //multer
 const storage = multer.diskStorage({
@@ -85,7 +93,7 @@ router.post("/InterviewVideo/:CandidateDocID/:CandidateID/:QuestionID/:VacancyID
     console.log(CandidateDocID)
     try {
         const data = await uploadToCloudinary(req.file.path, "CandidateInterview");
-        var feed = { imageUrl: data.url, publicId: data.public_id };
+        var feed = { imageUrl: data.url, publicId: data.public_id, QuestionAndAnswerID: QuestionID };
         var dataaa = [];
         dataaa.push(feed);
         const CandidateALLINFO = await CandidateModel.findOneAndUpdate(
@@ -108,8 +116,9 @@ router.post("/InterviewVideo/:CandidateDocID/:CandidateID/:QuestionID/:VacancyID
             console.log(CandidateALLINFO)
             console.log("Candidate Interviewwwww imported successfully.");
 
+           // res.status(400).json({ data.url, data.public_id, QuestionID })
 
-            return res.status(400).json({ message: 'Alllll Done for the storing in cloudinary' })
+            return   res.status(400).json(feed) //res.status(400).json({ message: 'Alllll Done for the storing in cloudinary' })
 
             // res.status(200).json("Alllll Done for the storing in cloudinary")
         }
@@ -132,13 +141,13 @@ router.post("/IncremntInterviewdCandidate/:CandidateDocID/:CandidateID/:VacancyI
 
     const { VacancyID } = req.params
     const { NumOfInterviewCandidate } = req.params
-  
+
     const { CandidateDocID } = req.params
     const { CandidateID } = req.params
     let num = parseInt(CandidateID)
     let num2 = parseInt(NumOfInterviewCandidate)
     console.log(CandidateID)
-   
+
     console.log(CandidateDocID)
 
     let query = { '_id': VacancyID }
@@ -148,6 +157,7 @@ router.post("/IncremntInterviewdCandidate/:CandidateDocID/:CandidateID/:VacancyI
     const VACANCYYYYYYYYYY222 = await VacancyModel.findOneAndUpdate(
         query, update)
     if (VACANCYYYYYYYYYY222) {
+        console.log("Enter To Incremntttttttttttt Succssfully111100001111")
         return res.status(400).json({ message: 'Increment Succssfully' })
     }
 
@@ -184,6 +194,60 @@ router.get("/SetIsEnterToInterview/:CandidateDocIDDDD/:CandidateIDDDD", async (r
         return res.status(400).json({ message: 'Alllll Done for the Interviewwwww Enterrrr imported successfully' })
 
     }
+
+})
+
+
+router.post("/SendingDataToModel", async (req, res) => {
+
+
+
+   //steps this is array of question
+    //stepsForImportance this is array of importance
+    // RECORDLISTTT this is array of records
+    // stepsForQuestionId this is array of question ids in correct order
+    const { steps, stepsForImportance, RECORDLISTTT ,stepsForQuestionId} = req.body
+    console.log("COLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
+    console.log(steps)
+    console.log(stepsForImportance)
+    console.log(RECORDLISTTT)
+    console.log("COLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
+
+ const jsonData1 =JSON.stringify(RECORDLISTTT)
+ const jsonDataShare = RECORDLISTTT +'/n'+steps+'/n'+stepsForImportance
+
+
+ const py = spawn('python', ['routes/Test.py', jsonData1,steps,stepsForImportance,stepsForQuestionId]);
+
+let dataFromPython=''
+ py.stdout.on('data' , (data)=>{
+    dataFromPython += data.toString();
+    console.log(`studo:${data}`);
+ })
+
+ py.stderr.on('data' , (data)=>{
+    console.log(`stderr:${data}`);
+ })
+
+
+ py.on('close' , (code)=>{
+       // Parse the data as JSON
+       const data = JSON.parse(dataFromPython);
+       // Access the double array
+       const Var1 = data.doubleArray
+       console.log("1111111111111111111")
+       console.log(Var1)
+       // Access the double variable
+       const Var2 = data.doubleVariable
+       console.log("2222222222222222")
+       console.log(Var2)
+       // Access the string
+       const Var3 = data.string
+       console.log("3333333333333")
+       console.log(Var3)
+    console.log(`child process exited with code ${code}`);
+ })
+
 
 })
 
