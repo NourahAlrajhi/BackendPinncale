@@ -143,6 +143,9 @@ router.post('/UPLOAD', upload.single('uploadfile'), async (req, res) => {
                 RECORDS:[{}],
                 Result:"Not Attended",
                 IsStartingTheInterview:false,
+             //   SpecificResultPersentage:[],
+                ResultPersentage:0.0,
+               // FillerWords:[],
                 ...item
             }
         });

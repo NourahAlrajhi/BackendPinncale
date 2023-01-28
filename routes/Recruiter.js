@@ -198,9 +198,10 @@ router.get("/SetIsEnterToInterview/:CandidateDocIDDDD/:CandidateIDDDD", async (r
 })
 
 
-router.post("/SendingDataToModel", async (req, res) => {
+router.post("/SendingDataToModel/:CandidateDocIDDD/:CandidateIDDD", async (req, res) => {
 
-
+    const { CandidateDocIDDD } = req.params
+    const { CandidateIDDD } = req.params
 
    //steps this is array of question
     //stepsForImportance this is array of importance
@@ -230,7 +231,7 @@ let dataFromPython=''
  })
 
 
- py.on('close' , (code)=>{
+ py.on('close' , async(code)=>{
        // Parse the data as JSON
        const data = JSON.parse(dataFromPython);
        // Access the double array
@@ -245,6 +246,38 @@ let dataFromPython=''
        const Var3 = data.string
        console.log("3333333333333")
        console.log(Var3)
+
+       const CandidateALLINFO = await CandidateModel.findOneAndUpdate(
+           {
+               _id: CandidateDocIDDD,
+           },
+           {
+               $set: {
+                   "Candidate_Info.$[orderItem].ResultPersentage": Var2,
+                   "Candidate_Info.$[orderItem].Result": Var3,
+                   "Candidate_Info.$[orderItem].SpecificResultPersentage": Var1,
+                   "Candidate_Info.$[orderItem].FillerWords": Var1,
+               }
+           },
+           {
+               arrayFilters: [{
+                   "orderItem.id": CandidateIDDD,
+               }]
+           }
+       )
+   
+   
+       if (CandidateALLINFO) {
+           console.log(CandidateALLINFO)
+           console.log("CandidateALLINFO Interviewwwww imported successfully.");
+   
+   
+         //  return res.status(400).json({ message: 'Alllll Done for the UnAuthorizationnnnnn CandidateALLINFO' })
+   
+           // res.status(200).json("Alllll Done for the storing in cloudinary")
+       }
+
+
     console.log(`child process exited with code ${code}`);
  })
 
