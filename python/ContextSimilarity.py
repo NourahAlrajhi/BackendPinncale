@@ -16,7 +16,7 @@ def ContextSimilarity(expected, actual, importance):
     overall = 0
     for i, value in enumerate(expected):
         # if expected[i] == "open ended question":
-        if value == "open ended question":
+        if value == "Open Ended Question":
             # similarity[i] = 0 -- no need since the array is already initialized with zeros
             continue
         
@@ -25,11 +25,11 @@ def ContextSimilarity(expected, actual, importance):
         embeddings = model.encode(sentences)
         similarity[i] = cosine_similarity([embeddings[0]],embeddings[1:])[0][0]
 
-        if importance[i] == "critical":
+        if importance[i] == "Critical":
             critical.append(0.50 * similarity[i])
-        elif importance[i] == "medium":
+        elif importance[i] == "High":
             medium.append(0.30 * similarity[i])
-        elif importance[i] == "low":
+        elif importance[i] == "Low":
             low.append(0.20 * similarity[i])
         
         similarity[i] = round(similarity[i] * 100, 2)
@@ -42,15 +42,15 @@ def ContextSimilarity(expected, actual, importance):
     overall = averageCritical + averageMedium + averageLow
 
     if overall > 0.60:
-        decision = "pass"
+        decision = "Passed"
     else:
-        decision = "fail"
+        decision = "Failed"
     
     overall = round(overall * 100, 2)
     
     return similarity, overall, decision
 
-# for testing uncomment the code below 
+#for testing uncomment the code below 
 # exp = ["hi", "hello", "welcome", "hi", "hi", "hello"]
 # act = ["hi", "hi", "hello", "hello", "hello", "welcome"]
 # imp = ["critical", "medium", "critical", "critical", "medium", "low"]

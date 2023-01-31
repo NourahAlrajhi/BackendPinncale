@@ -3,54 +3,59 @@ import subprocess
 import os
 from urllib.request import urlopen, urlretrieve
 import json
+import sys
 import requests
 from cloudinary.utils import cloudinary_url
 from dotenv import load_dotenv
 load_dotenv()
-
-# Import the Cloudinary libraries
-# ==============================
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
-import ffmpeg
-
-# r = requests.get('http://res.cloudinary.com/ddkx3lmtt/video/upload/v1674163194/CandidateInterview/n3ag8x3r1uxasrqxigpx.mkv')
+import ContextSimilarity as c
 config = cloudinary.config(secure=True)
 
-# url = 'http://res.cloudinary.com/ddkx3lmtt/video/upload/v1674163194/CandidateInterview/n3ag8x3r1uxasrqxigpx.mkv'
-# response = urlopen(url)
-# output_json = json.loads(unicodedata(response.read()))
 cloudinary.config( 
   cloud_name = "ddkx3lmtt", 
   api_key = "762496359684771", 
   api_secret = "bWNYJYSFyDmkE__trELFtXPy7jQ",
   secure = True
 )
-
-
-# video_url = cloudinary_url("v1674163194/CandidateInterview/n3ag8x3r1uxasrqxigpx.mkv", resource_type='video')
-# dic_video = video_url[1]
-
 os.environ["CLOUDINARY_URL"] = "cloudinary://762496359684771:bWNYJYSFyDmkE__trELFtXPy7jQ@ddkx3lmtt"
-video_speech = cloudinary.CloudinaryVideo("v1674375576/CandidateInterview/dgflhkswrymx2kdiwhlx").video()
+
+model = whisper.load_model("base") 
+
+#sys.argv[1] #this is array of records
+#sys.argv[2] #this is array of ActualAnswers
+#sys.argv[3] #this is array of importance
+#sys.argv[4] #this is array of question ids in correct order
+
+RECORDARRAY=sys.argv[1]
+EXPECTED = sys.argv[2]
+IMPORTANCE = sys.argv[3]
+IDARRAY=sys.argv[4]
 
 
-# Input file
-in_file = "http://res.cloudinary.com/ddkx3lmtt/video/upload/v1674841122/CandidateInterview/kcynkerjpkc6ecoaa0jr.mkv"
-# Output file
-out_file = "kcynkerjpkc6ecoaa0jr.mp4"
+ANSWERS= []
+url = ""
+video_format = "mp3"
+result = ""
 
-# Run the conversion
-(
-    ffmpeg
-    .input(in_file)
-    .output(out_file, format="mp4")
-    .run()
-)
-
+for i in range(len(IDARRAY)):
+  for j in range(len(RECORDARRAY)):
+    if RECORDARRAY[j]['QuestionAndAnswerID'] == IDARRAY[i]:
+      url = RECORDARRAY[j]['imageUrl'].replace(RECORDARRAY[j]['imageUrl'][len(RECORDARRAY[j]['imageUrl']) - 3:], video_format) #replace mkv to mp3
+      result = model.transcribe(url, fp16=False, language='English')
+      ANSWERS.append(result["text"])
 
 
-model = whisper.load_model("base")
-result = model.transcribe(out_file, fp16=False, language='English')
-print(result["text"])
+doubles_array, double_variable, string = c.ContextSimilarity(EXPECTED, ANSWERS, IMPORTANCE)
+
+# for i in range(len(ANSWERS)):
+#   print("Question" + str(i+1) + "================")
+#   print(ANSWERS[i])
+#   print("=======================")
+  
+
+data = {"doubleArray": doubles_array, "doubleVariable": double_variable, "string": string}
+print(json.dumps(data), file=sys.stdout)
+sys.stdout.flush()

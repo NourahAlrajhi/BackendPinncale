@@ -116,9 +116,9 @@ router.post("/InterviewVideo/:CandidateDocID/:CandidateID/:QuestionID/:VacancyID
             console.log(CandidateALLINFO)
             console.log("Candidate Interviewwwww imported successfully.");
 
-           // res.status(400).json({ data.url, data.public_id, QuestionID })
+            // res.status(400).json({ data.url, data.public_id, QuestionID })
 
-            return   res.status(400).json(feed) //res.status(400).json({ message: 'Alllll Done for the storing in cloudinary' })
+            return res.status(400).json(feed) //res.status(400).json({ message: 'Alllll Done for the storing in cloudinary' })
 
             // res.status(200).json("Alllll Done for the storing in cloudinary")
         }
@@ -203,83 +203,83 @@ router.post("/SendingDataToModel/:CandidateDocIDDD/:CandidateIDDD", async (req, 
     const { CandidateDocIDDD } = req.params
     const { CandidateIDDD } = req.params
 
-   //steps this is array of question
+    //steps this is array of ActualAnswers
     //stepsForImportance this is array of importance
     // RECORDLISTTT this is array of records
     // stepsForQuestionId this is array of question ids in correct order
-    const { steps, stepsForImportance, RECORDLISTTT ,stepsForQuestionId} = req.body
+    const { steps, stepsForImportance, RECORDLISTTT, stepsForQuestionId } = req.body
     console.log("COLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
     console.log(steps)
     console.log(stepsForImportance)
     console.log(RECORDLISTTT)
     console.log("COLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
 
- const jsonData1 =JSON.stringify(RECORDLISTTT)
- const jsonDataShare = RECORDLISTTT +'/n'+steps+'/n'+stepsForImportance
+    const jsonData1 = JSON.stringify(RECORDLISTTT)
+    const jsonDataShare = RECORDLISTTT + '/n' + steps + '/n' + stepsForImportance
 
 
- const py = spawn('python', ['routes/Test.py', jsonData1,steps,stepsForImportance,stepsForQuestionId]);
+    const py = spawn('python', ['../python/speechWhisper.py', jsonData1, steps, stepsForImportance, stepsForQuestionId]);
 
-let dataFromPython=''
- py.stdout.on('data' , (data)=>{
-    dataFromPython += data.toString();
-    console.log(`studo:${data}`);
- })
+    let dataFromPython = ''
+    py.stdout.on('data', (data) => {
+        dataFromPython += data.toString();
+        console.log(`studo:${data}`);
+    })
 
- py.stderr.on('data' , (data)=>{
-    console.log(`stderr:${data}`);
- })
-
-
- py.on('close' , async(code)=>{
-       // Parse the data as JSON
-       const data = JSON.parse(dataFromPython);
-       // Access the double array
-       const Var1 = data.doubleArray
-       console.log("1111111111111111111")
-       console.log(Var1)
-       // Access the double variable
-       const Var2 = data.doubleVariable
-       console.log("2222222222222222")
-       console.log(Var2)
-       // Access the string
-       const Var3 = data.string
-       console.log("3333333333333")
-       console.log(Var3)
-
-       const CandidateALLINFO = await CandidateModel.findOneAndUpdate(
-           {
-               _id: CandidateDocIDDD,
-           },
-           {
-               $set: {
-                   "Candidate_Info.$[orderItem].ResultPersentage": Var2,
-                   "Candidate_Info.$[orderItem].Result": Var3,
-                   "Candidate_Info.$[orderItem].SpecificResultPersentage": Var1,
-                   "Candidate_Info.$[orderItem].FillerWords": Var1,
-               }
-           },
-           {
-               arrayFilters: [{
-                   "orderItem.id": CandidateIDDD,
-               }]
-           }
-       )
-   
-   
-       if (CandidateALLINFO) {
-           console.log(CandidateALLINFO)
-           console.log("CandidateALLINFO Interviewwwww imported successfully.");
-   
-   
-         //  return res.status(400).json({ message: 'Alllll Done for the UnAuthorizationnnnnn CandidateALLINFO' })
-   
-           // res.status(200).json("Alllll Done for the storing in cloudinary")
-       }
+    py.stderr.on('data', (data) => {
+        console.log(`stderr:${data}`);
+    })
 
 
-    console.log(`child process exited with code ${code}`);
- })
+    py.on('close', async (code) => {
+        // Parse the data as JSON
+        const data = JSON.parse(dataFromPython);
+        // Access the double array
+        const Var1 = data.doubleArray
+        console.log("1111111111111111111")
+        console.log(Var1)
+        // Access the double variable
+        const Var2 = data.doubleVariable
+        console.log("2222222222222222")
+        console.log(Var2)
+        // Access the string
+        const Var3 = data.string
+        console.log("3333333333333")
+        console.log(Var3)
+
+        const CandidateALLINFO = await CandidateModel.findOneAndUpdate(
+            {
+                _id: CandidateDocIDDD,
+            },
+            {
+                $set: {
+                    "Candidate_Info.$[orderItem].ResultPersentage": Var2,
+                    "Candidate_Info.$[orderItem].Result": Var3,
+                    "Candidate_Info.$[orderItem].SpecificResultPersentage": Var1,
+                    "Candidate_Info.$[orderItem].FillerWords": Var1,
+                }
+            },
+            {
+                arrayFilters: [{
+                    "orderItem.id": CandidateIDDD,
+                }]
+            }
+        )
+
+
+        if (CandidateALLINFO) {
+            console.log(CandidateALLINFO)
+            console.log("CandidateALLINFO Interviewwwww imported successfully.");
+
+
+            //  return res.status(400).json({ message: 'Alllll Done for the UnAuthorizationnnnnn CandidateALLINFO' })
+
+            // res.status(200).json("Alllll Done for the storing in cloudinary")
+        }
+
+
+        console.log(`child process exited with code ${code}`);
+    })
 
 
 })
