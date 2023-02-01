@@ -60,7 +60,7 @@ AdminSchema.statics.login = async function (logName, password, name) {
 
     const match = await bcrypt.compare(password, Admin.password)
     if (!match) {
-        throw Error('Incorrect password')
+        throw Error('Incorrect password/UserName')
     }
 
     return Admin
