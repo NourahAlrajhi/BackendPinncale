@@ -212,13 +212,17 @@ router.post("/SendingDataToModel/:CandidateDocIDDD/:CandidateIDDD", async (req, 
     console.log(steps)
     console.log(stepsForImportance)
     console.log(RECORDLISTTT)
+    console.log(stepsForQuestionId)
     console.log("COLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
 
     const jsonData1 = JSON.stringify(RECORDLISTTT)
+    const jsonData2 = JSON.stringify(steps)
+    const jsonData3 = JSON.stringify(stepsForImportance)
+    const jsonData4 = JSON.stringify(stepsForQuestionId)
     const jsonDataShare = RECORDLISTTT + '/n' + steps + '/n' + stepsForImportance
 
 
-    const py = spawn('python', ['../python/speechWhisper.py', jsonData1, steps, stepsForImportance, stepsForQuestionId]);
+    const py = spawn('python', ['py/speechWhisper.py', jsonData1, jsonData2, jsonData3, jsonData4]);
 
     let dataFromPython = ''
     py.stdout.on('data', (data) => {

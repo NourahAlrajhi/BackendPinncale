@@ -47,10 +47,11 @@ def ContextSimilarity(expected, actual, importance):
         decision = "Failed"
     
     overall = round(overall * 100, 2)
+    similarity =[x for x in similarity]
     
     return similarity, overall, decision
 
-#for testing uncomment the code below 
+# for testing uncomment the code below 
 # exp = ["hi", "hello", "welcome", "hi", "hi", "hello"]
 # act = ["hi", "hi", "hello", "hello", "hello", "welcome"]
 # imp = ["critical", "medium", "critical", "critical", "medium", "low"]
