@@ -23,6 +23,8 @@ var multer = require('multer');
 const app = express()
 app.use(cors());
 
+
+
 //static folder patha
 //app.use(express.static(path.resolve(__dirname, 'public')));
 
@@ -31,6 +33,9 @@ app.use(cors());
 app.use(express.json())
 
 app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin','*');
+  res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE');
+  res.setHeader('Access-Control-Allow-Methods','Content-Type','Authorization');
   console.log(req.path, req.method)
   next()
 })
