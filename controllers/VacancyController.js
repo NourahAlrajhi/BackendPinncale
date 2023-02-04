@@ -35,6 +35,7 @@ const AddRecruiterJobVscancy = async (req, res) => {
 // create new Vacancy
 const createVacancy = async (req, res) => {
     const user_id = req.Recruiter._id
+    console.log(user_id)
     console.log("Enterrrrrrrrrrrr createVacancy")
 
     const { Position, title, Esubject, Ebody, linkExpDate, linkExpTime/*Candidate ,Pass,fail,notAttended*/, status } = req.body
@@ -81,9 +82,11 @@ const createVacancy = async (req, res) => {
             console.log(newMessage)
             let Recruiterrr = await Recruiterrrrrrrr.findById(user_id);
             console.log("----------------------------------2222222222")
+            console.log(Recruiterrr)
 
             Recruiterrr.Vacancies.push(newMessage._id);
             console.log("---------------------------------333333333")
+            console.log(Recruiterrr)
 
             Recruiterrr = await Recruiterrr.save();
             console.log("---------------------------------44444")
