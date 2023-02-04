@@ -24,10 +24,10 @@ const RecruiterSchema = new Schema({
         ref: 'Vacancy'
 
     }],
-    // Employee_ID: {
-    //     type: String,
-    //     required: true
-    // },
+    Employee_ID: {
+        type: String,
+        required: true
+    },
 
 }, { timestamps: true }
 
