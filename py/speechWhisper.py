@@ -24,6 +24,29 @@ os.environ["CLOUDINARY_URL"] = "cloudinary://762496359684771:bWNYJYSFyDmkE__trEL
 
 model = whisper.load_model("base") 
 
+# RECORDARRAY2=[{
+#   "imageUrl":"http://res.cloudinary.com/ddkx3lmtt/video/upload/v1675370638/CandidateInterview/ymfy3xexllzzlu2gvl2d.mkv",
+#   "publicId":"CandidateInterview/ymfy3xexllzzlu2gvl2d",
+#   "QuestionAndAnswerID":"022d25b9-1f76-46cf-bd24-b2ba8432c168"
+# },
+# {
+#    "imageUrl":"http://res.cloudinary.com/ddkx3lmtt/video/upload/v1675370638/CandidateInterview/oqbvfibwjcxts3bgaf5l.mkv",
+#   "publicId":"CandidateInterview/oqbvfibwjcxts3bgaf5l",
+#   "QuestionAndAnswerID":"00cea5dc-3810-4cf9-8ead-cca14534c727"
+# },
+# {
+#    "imageUrl":"http://res.cloudinary.com/ddkx3lmtt/video/upload/v1675370638/CandidateInterview/ibki4zqgrkutgwkfp12g.mkv",
+#   "publicId":"CandidateInterview/ibki4zqgrkutgwkfp12g",
+#   "QuestionAndAnswerID":"dc15a552-8710-4471-964d-3bc25db10a4e"
+# },
+# {
+#   "imageUrl":"http://res.cloudinary.com/ddkx3lmtt/video/upload/v1675370638/CandidateInterview/zkegya9nepyu6ndhamab.mkv",
+#   "publicId":"CandidateInterview/zkegya9nepyu6ndhamab",
+#   "QuestionAndAnswerID":"d0aff3c3-e499-44f0-8e83-4588ebc6ab88"
+# }]
+
+# IDARRAY2=["022d25b9-1f76-46cf-bd24-b2ba8432c168","00cea5dc-3810-4cf9-8ead-cca14534c727","d0aff3c3-e499-44f0-8e83-4588ebc6ab88","dc15a552-8710-4471-964d-3bc25db10a4e"]
+
 #sys.argv[1] #this is array of records
 #sys.argv[2] #this is array of ActualAnswers
 #sys.argv[3] #this is array of importance
