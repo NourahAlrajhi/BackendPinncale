@@ -145,6 +145,7 @@ router.post('/UPLOAD', upload.single('uploadfile'), async (req, res) => {
                 IsStartingTheInterview:false,
              //   SpecificResultPersentage:[],
                 ResultPersentage:0.0,
+                SubmitTheinterview:false,
                // FillerWords:[],
                 ...item
             }

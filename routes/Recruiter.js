@@ -289,4 +289,39 @@ router.post("/SendingDataToModel/:CandidateDocIDDD/:CandidateIDDD", async (req, 
 })
 
 
+
+router.get("/SetIsSubmitEnterview/:CandidateDocIDDDD/:CandidateIDDDD", async (req, res) => {
+    const { CandidateDocIDDDD } = req.params
+    const { CandidateIDDDD } = req.params
+
+    console.log("Enter GIVEAUTH")
+    const CandidateModelALLINFO = await CandidateModel.findOneAndUpdate(
+        {
+            _id: CandidateDocIDDDD,
+        },
+        {
+            $set: {
+                "Candidate_Info.$[orderItem].SubmitTheinterview": true
+            }
+        },
+        {
+            arrayFilters: [{
+                "orderItem.id": CandidateIDDDD,
+            }]
+        }
+    )
+
+
+    if (CandidateModelALLINFO) {
+        console.log(CandidateModelALLINFO)
+        console.log("CandidateModelALLINFO Interviewwwww Enterrrr imported successfully.");
+
+
+        return res.status(400).json({ message: 'Alllll Done puting falseeeeeeeeeee' })
+
+    }
+
+})
+
+
 module.exports = router
