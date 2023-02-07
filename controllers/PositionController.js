@@ -51,18 +51,18 @@ const createPositions = async (req, res) => {
     let emptyFields = []
 
     if (!name) {
-        //   return res.status(400).json({ error: 'Please fill the Position Name field' })
+          return res.status(400).json({ error: 'Please fill the Position Name field' })
         emptyFields.push('name')
         console.log("111111--------------------------")
     }
     if (!description) {
-        //  return res.status(400).json({ error: 'Please fill the Position Description field' })
+         return res.status(400).json({ error: 'Please fill the Position Description field' })
 
         emptyFields.push('description')
         console.log("2222222--------------------------")
     }
     if (!noticePeriod) {
-        // return res.status(400).json({ error: 'Please fill the Position NoticePeriod field' })
+        return res.status(400).json({ error: 'Please fill the NoticePeriod field' })
         emptyFields.push('noticePeriod')
         console.log("3333333--------------------------")
     }
@@ -70,25 +70,25 @@ const createPositions = async (req, res) => {
     var index;
     for (index = 0; index < arr.length; ++index) {
         if (!arr[index].questions) {
-            //  return res.status(400).json({ error: 'Please fill the Position Questions field' })
+             return res.status(400).json({ error: 'Please fill the Question field' })
             emptyFields.push('questions')
             console.log("4444444--------------------------")
         }
         if (!arr[index].expectedAnswers) {
-            //  return res.status(400).json({ error: 'Please fill the Position Questions ExpectedAnswers field' })
+             return res.status(400).json({ error: 'Please fill the Position ExpectedAnswer field' })
 
             emptyFields.push('expectedAnswers')
             console.log("5555555--------------------------")
         }
         if (!arr[index].imprtanceOfQ) {
-            //    return res.status(400).json({ error: 'Please fill the Position Questions imprtance field' })
+               return res.status(400).json({ error: 'Please fill the Position importance field' })
 
             emptyFields.push('imprtanceOfQ')
             console.log("6666666--------------------------")
         }
     }
     if (!ExpectedSalary) {
-        //   return res.status(400).json({ error: 'Please fill the Position ExpectedSalary field' })
+          return res.status(400).json({ error: 'Please fill the Position ExpectedSalary field' })
 
         emptyFields.push('ExpectedSalary')
         console.log("777777777--------------------------")
@@ -98,7 +98,7 @@ const createPositions = async (req, res) => {
     console.log("--------------------------")
     if (emptyFields.length > 0) {
         console.log("-222-------------------------")
-        return res.status(400).json({ error: 'Cannot Add Position If Field Is Empty', emptyFields })
+        // return res.status(400).json({ error: 'Cannot Add Position If Field Is Empty', emptyFields })
     }
 
     // add doc to db
