@@ -62,7 +62,7 @@ const createPositions = async (req, res) => {
         console.log("2222222--------------------------")
     }
     if (!noticePeriod) {
-        return res.status(400).json({ error: 'Please fill the NoticePeriod field' })
+        return res.status(400).json({ error: 'Please fill the Notice Period field' })
         emptyFields.push('noticePeriod')
         console.log("3333333--------------------------")
     }

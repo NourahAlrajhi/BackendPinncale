@@ -325,7 +325,9 @@ router.post("/SendingDataToModel/:CandidateDocIDDD/:CandidateIDDD", async (req, 
                     // "Candidate_Info.$[orderItem].ResultPersentage": Var2,
                     // "Candidate_Info.$[orderItem].Result": Var3,
                     // "Candidate_Info.$[orderItem].SpecificResultPersentage": Var1,
-                    "Candidate_Info.$[orderItem].FillerWords": Var1
+                    "Candidate_Info.$[orderItem].FillerWords": Var1,
+                    "Candidate_Info.$[orderItem].FillerWordsWords": Var3
+
                 }
             },
             {
