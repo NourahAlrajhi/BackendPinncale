@@ -260,7 +260,7 @@ router.post("/SendingDataToModel/:CandidateDocIDDD/:CandidateIDDD", async (req, 
                     "Candidate_Info.$[orderItem].ResultPersentage": Var2,
                     "Candidate_Info.$[orderItem].Result": Var3,
                     "Candidate_Info.$[orderItem].SpecificResultPersentage": Var1,
-                    "Candidate_Info.$[orderItem].FillerWords": Var1,
+                    // "Candidate_Info.$[orderItem].FillerWords": Var1,
                 }
             },
             {
@@ -283,6 +283,71 @@ router.post("/SendingDataToModel/:CandidateDocIDDD/:CandidateIDDD", async (req, 
 
 
         console.log(`child process exited with code ${code}`);
+    })
+
+
+
+    const py2 = spawn('python', ['py/asrcopy.py', jsonData1,  jsonData4]);
+
+    let dataFromPython2 = ''
+    py2.stdout.on('data', (data2) => {
+        dataFromPython2 += data2.toString();
+        console.log(`studo:${data2}`);
+    })
+
+    py2.stderr.on('data', (data2) => {
+        console.log(`stderr:${data2}`);
+    })
+
+
+    py2.on('close', async (code2) => {
+        // Parse the data as JSON
+        const data2 = JSON.parse(dataFromPython2);
+        // Access the double array
+        const Var1 = data2.doubleArray
+        console.log("1111111111111111111")
+        console.log(Var1)
+        // Access the double variable
+        const Var2 = data2.doubleVariable
+        console.log("2222222222222222")
+        console.log(Var2)
+        // Access the string
+        const Var3 = data2.string
+        console.log("3333333333333")
+        console.log(Var3)
+
+        const CandidateALLINFO = await CandidateModel.findOneAndUpdate(
+            {
+                _id: CandidateDocIDDD,
+            },
+            {
+                $set: {
+                    // "Candidate_Info.$[orderItem].ResultPersentage": Var2,
+                    // "Candidate_Info.$[orderItem].Result": Var3,
+                    // "Candidate_Info.$[orderItem].SpecificResultPersentage": Var1,
+                    "Candidate_Info.$[orderItem].FillerWords": Var1
+                }
+            },
+            {
+                arrayFilters: [{
+                    "orderItem.id": CandidateIDDD,
+                }]
+            }
+        )
+
+
+        if (CandidateALLINFO) {
+            console.log(CandidateALLINFO)
+            console.log("CandidateALLINFO Interviewwwww imported successfully.");
+
+
+            //  return res.status(400).json({ message: 'Alllll Done for the UnAuthorizationnnnnn CandidateALLINFO' })
+
+            // res.status(200).json("Alllll Done for the storing in cloudinary")
+        }
+
+
+        console.log(`child process exited with code2 ${code2}`);
     })
 
 
