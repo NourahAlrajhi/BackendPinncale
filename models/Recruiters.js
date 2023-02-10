@@ -37,7 +37,7 @@ RecruiterSchema.statics.signup = async function (logName, password, name, Employ
 
     // validation
     if (!logName || !password) {
-        throw Error('All fields must be filled')
+        throw Error('All Fields Must Be Filled')
     }
     if (!validator.isStrongPassword(password)) {
         throw Error('Password not strong enough')
@@ -60,12 +60,12 @@ RecruiterSchema.statics.signup = async function (logName, password, name, Employ
 RecruiterSchema.statics.login = async function (logName, password, name) {
 
     if (!logName || !password) {
-        throw Error('All fields must be filled')
+        throw Error('All Fields Must Be Filled')
     }
 
     const Recruiter = await this.findOne({ logName })
     if (!Recruiter) {
-        throw Error('Recruiter is not authorized')
+        throw Error('Recruiter Is Not Authorized')
     }
 
     const match = await bcrypt.compare(password, Recruiter.password)
