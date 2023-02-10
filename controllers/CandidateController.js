@@ -141,7 +141,7 @@ const getSendEmail = async (req, res) => {
             html: `
             <h2>Dear Candidate,</h2>
             <h4>Thank you for your application to the ${PositionChoosen} role at ELM.</h4>\
-            <h4>We would like to invite you to interview for the role by joining this <a href="https://pinnacle-recruiting.herokuapp.com/Interview_welcome_screen/${e}/${CandidateDocId}/${INFO.CandidateID}">link,</a>make sure to open the interview through Google Chrome Browser</h4>\
+            <h4>We would like to invite you to interview for the role by joining this <a href="https://pinnacle-recruiting.herokuapp.com/Interview_welcome_screen/${e}/${CandidateDocId}/${INFO.CandidateID}">link,</a> make sure to open the interview through Google Chrome Browser</h4>\
             <h4>The interview will last between 10 - 30 minutes in total.</h4>\
             <h4>Please note that the link will expire on the following date and time:</h4>\
             <h4>Date : ${(new Date(Datee).getDate()) + "/" + (new Date(Datee).getMonth() + 1) + "/" + (new Date(Datee).getFullYear())}</h4>\
