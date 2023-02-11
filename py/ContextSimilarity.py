@@ -10,7 +10,7 @@ import array
 def ContextSimilarity(expected, actual, importance):
     similarity = array.array("d", [0] * len(expected))
     critical = []
-    medium = []
+    high = []
     low = []
     decision = ""
     overall = 0
@@ -28,18 +28,22 @@ def ContextSimilarity(expected, actual, importance):
         if importance[i] == "Critical":
             critical.append(0.50 * similarity[i])
         elif importance[i] == "High":
-            medium.append(0.30 * similarity[i])
+            high.append(0.30 * similarity[i])
         elif importance[i] == "Low":
             low.append(0.20 * similarity[i])
         
         similarity[i] = round(similarity[i] * 100, 2)
         
     # can be done in numpy
-    averageCritical = sum(critical) / len(critical)
-    averageMedium = sum(medium) / len(medium)
-    averageLow = sum(low) / len(low)
-
-    overall = averageCritical + averageMedium + averageLow
+    if len(critical)!=0:
+        averageCritical = sum(critical) / len(critical)
+        overall = overall + averageCritical
+    if len(high)!=0:
+        averageHigh = sum(high) / len(high)
+        overall = overall + averageHigh
+    if len(low)!=0:
+        averageLow = sum(low) / len(low)
+        overall = overall + averageLow
 
     if overall > 0.60:
         decision = "Passed"
@@ -54,7 +58,7 @@ def ContextSimilarity(expected, actual, importance):
 # for testing uncomment the code below 
 # exp = ["hi", "hello", "welcome", "hi", "hi", "hello"]
 # act = ["hi", "hi", "hello", "hello", "hello", "welcome"]
-# imp = ["critical", "medium", "critical", "critical", "medium", "low"]
+# imp = ["Critical", "Low", "Critical", "Critical", "Low", "Low"]
 
 # sim, ov, dec= ContextSimilarity(exp, act, imp)
 
