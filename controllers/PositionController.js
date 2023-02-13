@@ -143,37 +143,83 @@ const updatePosition = async (req, res) => {
 
     let emptyFields = []
 
+
     if (!name) {
-        emptyFields.push('name')
-    }
-    if (!description) {
-        emptyFields.push('description')
-    }
-    if (!noticePeriod) {
-        emptyFields.push('noticePeriod')
-    }
-    var index;
-    for (index = 0; index < arr.length; ++index) {
-        if (!arr[index].questions) {
-            emptyFields.push('questions')
-        }
-        if (!arr[index].expectedAnswers) {
-            emptyFields.push('expectedAnswers')
-        }
-        if (!arr[index].imprtanceOfQ) {
-            emptyFields.push('imprtanceOfQ')
-        }
-    }
+        return res.status(400).json({ error: 'Please Fill The Position Name field' })
+      emptyFields.push('name')
+      console.log("111111--------------------------")
+  }
+  if (!description) {
+       return res.status(400).json({ error: 'Please Fill The Job Description Field' })
+
+      emptyFields.push('description')
+      console.log("2222222--------------------------")
+  }
+  if (!noticePeriod) {
+      return res.status(400).json({ error: 'Please Fill The Notice Period Field' })
+      emptyFields.push('noticePeriod')
+      console.log("3333333--------------------------")
+  }
+
+  var index;
+  for (index = 0; index < arr.length; ++index) {
+      if (!arr[index].questions) {
+           return res.status(400).json({ error: 'Please Fill The Question Field' })
+          emptyFields.push('questions')
+          console.log("4444444--------------------------")
+      }
+      if (!arr[index].expectedAnswers) {
+           return res.status(400).json({ error: 'Please Fill The ExpectedAnswer Field' })
+
+          emptyFields.push('expectedAnswers')
+          console.log("5555555--------------------------")
+      }
+      if (!arr[index].imprtanceOfQ) {
+             return res.status(400).json({ error: 'Please Select The Importance Field' })
+
+          emptyFields.push('imprtanceOfQ')
+          console.log("6666666--------------------------")
+      }
+  }
+  if (!ExpectedSalary) {
+        return res.status(400).json({ error: 'Please Fill The  ExpectedSalary Field' })
+
+      emptyFields.push('ExpectedSalary')
+      console.log("777777777--------------------------")
+
+  }
+
+    // if (!name) {
+    //     emptyFields.push('name')
+    // }
+    // if (!description) {
+    //     emptyFields.push('description')
+    // }
+    // if (!noticePeriod) {
+    //     emptyFields.push('noticePeriod')
+    // }
+    // var index;
+    // for (index = 0; index < arr.length; ++index) {
+    //     if (!arr[index].questions) {
+    //         emptyFields.push('questions')
+    //     }
+    //     if (!arr[index].expectedAnswers) {
+    //         emptyFields.push('expectedAnswers')
+    //     }
+    //     if (!arr[index].imprtanceOfQ) {
+    //         emptyFields.push('imprtanceOfQ')
+    //     }
+    // }
 
 
-    if (!ExpectedSalary) {
-        emptyFields.push('ExpectedSalary')
+    // if (!ExpectedSalary) {
+    //     emptyFields.push('ExpectedSalary')
 
-    }
+    // }
 
-    if (emptyFields.length > 0) {
-        return res.status(400).json({ error: 'Please fill in all the fields', emptyFields })
-    }
+    // if (emptyFields.length > 0) {
+    //     return res.status(400).json({ error: 'Please fill in all the fields', emptyFields })
+    // }
 
 
     const Position = await Positions.findOneAndUpdate({ _id: id }, {
