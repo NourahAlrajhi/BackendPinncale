@@ -2,17 +2,21 @@ import azure.cognitiveservices.speech as speechsdk
 import time
 import json
 import sys
-# import requests
-from cloudinary.utils import cloudinary_url
-# from dotenv import load_dotenv
-# load_dotenv()
-import cloudinary
 import cloudinary.uploader
-import cloudinary.api
+import requests
+import subprocess
 
-config = cloudinary.config(secure=True)
-url = ""
-video_format = "wav"
+# Cloudinary credentials
+cloud_name = "ddkx3lmtt"
+api_key = "762496359684771"
+api_secret = "bWNYJYSFyDmkE__trELFtXPy7jQ"
+
+
+RECORDARRAY=sys.argv[1]
+IDSARRAY = sys.argv[2] 
+ArrayAfterLoadRecord = json.loads(RECORDARRAY)
+
+ArrayAfterLoadIDs = json.loads(IDSARRAY)
 
 speech_config = speechsdk.SpeechConfig(subscription='5537925079fc4f01b9a648399bb78f77', region='eastus')
 speech_config.speech_recognition_language="en-US"
@@ -21,7 +25,6 @@ fillers = json.load(open('wordsDL.json'))
 
 filler_word_found = []
 
-url = "http://res.cloudinary.com/ddkx3lmtt/video/upload/v1675370638/CandidateInterview/ymfy3xexllzzlu2gvl2d.mkv".replace("http://res.cloudinary.com/ddkx3lmtt/video/upload/v1675370638/CandidateInterview/ymfy3xexllzzlu2gvl2d.mkv"[len("http://res.cloudinary.com/ddkx3lmtt/video/upload/v1675370638/CandidateInterview/ymfy3xexllzzlu2gvl2d.mkv") - 3:], video_format) #replace mkv to mp3
 
 RECORDARRAY2=[{
   "imageUrl":"http://res.cloudinary.com/ddkx3lmtt/video/upload/v1675370638/CandidateInterview/ymfy3xexllzzlu2gvl2d.mkv",
@@ -79,8 +82,8 @@ def check_filler(text):
     for filler in fillers['fillers']:
       if filler in text:
         filler_word_found.append(text)
-def from_file():
-    audio_config = speechsdk.audio.AudioConfig(filename='output.wav')
+def from_file(audio_filename):
+    audio_config = speechsdk.audio.AudioConfig(filename=audio_filename)
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
 
     done = False
@@ -119,11 +122,26 @@ def from_file():
 a_array=[]
 b_array=[]
 
-for i in range(len(IDARRAY2)):
-  for j in range(len(RECORDARRAY2)):
-    if RECORDARRAY2[j]["QuestionAndAnswerID"] == IDARRAY2[i]:
+for i in range(len(ArrayAfterLoadIDs)):
+  for j in range(len(ArrayAfterLoadRecord)):
+    if ArrayAfterLoadRecord[j]["QuestionAndAnswerID"] == ArrayAfterLoadIDs[i]:
         filler_word_found = []
-        from_file()
+        video_url= ArrayAfterLoadRecord[j]["imageUrl"]
+        response = requests.get(video_url, stream=True)
+        with open("video.mkv", "wb") as f:
+            for chunk in response.iter_content(chunk_size=1024):
+                if chunk:
+                    f.write(chunk)
+
+        # Convert video to Mono, 16KHZ, and 16Bit
+        subprocess.call("ffmpeg -i video.mkv -ac 1 -ar 16000 -acodec pcm_s16le audio"+ ArrayAfterLoadIDs[i]+".wav", shell=True)
+
+        # Read audio file
+      
+        audio_filename = "audio"+ ArrayAfterLoadIDs[i]+".wav"
+        audio_config = speechsdk.audio.AudioConfig(filename=audio_filename)
+        
+        from_file(audio_filename)
 
 
 
