@@ -93,7 +93,7 @@ def from_file(audio_filename):
         global a
         global b
         a= len(filler_word_found)
-        b='low' if len(filler_word_found) < 10 else 'medium' if len(filler_word_found) < 15 else 'high' 
+        b='low' if len(filler_word_found) < 5 else 'medium' if len(filler_word_found) < 10 else 'high' 
         evt.session_id
         speech_recognizer.stop_continuous_recognition()
         nonlocal done
