@@ -142,12 +142,13 @@ const getSendEmail = async (req, res) => {
             subject: EmailSubject,
             text: EmailBody,
             html: `
-            <h2>  Dear Dream Team,</h2>
-            <h4>It’s been an incredible ride these 6 months. One thing I know for sure, I couldn’t have made it this far without you guys! The results we have achieved are impressive. I am so grateful to be one member of this amazed team that is willing to go above and beyond to achieve such great success for our team.</h4>\
-            <h4>We reached the end of Pinnacle but make sure that we will always be there for each other to reach the Pinnacle.</h4>\
-            <h4>To Make sure that the candidate side is still working <a href="https://pinnacle-recruiting.herokuapp.com/Interview_welcome_screen/${e}/${CandidateDocId}/${INFO.CandidateID}">link,</a> </h4>\
-
-
+            <h2>Dear Candidate,</h2>
+            <h4>Thank you for your application to the ${PositionChoosen} role at ELM.</h4>\
+            <h4>We would like to invite you to interview for the role by joining this <a href="https://pinnacle-recruiting.herokuapp.com/Interview_welcome_screen/${e}/${CandidateDocId}/${INFO.CandidateID}">link,</a> make sure to open the interview through Google Chrome Browser.</h4>\
+            <h4>The interview will last between 10 - 30 minutes in total.</h4>\
+            <h4>Please note that the link will expire on the following date and time:</h4>\
+            <h4>Date : ${(new Date(Datee).getDate()) + "/" + (new Date(Datee).getMonth() + 1) + "/" + (new Date(Datee).getFullYear())}</h4>\
+            <h4>Time : ${(new Date(Datee).getHours()+3) + ":" + (new Date(Datee).getMinutes())}</h4>\
             ` ,
         };
         message.to = INFO.CandidateEmail
