@@ -98,7 +98,7 @@ doubles_array, double_variable, string = c.ContextSimilarity(ArrayAfterLoadAnswe
 #   print("Question" + str(i+1) + "================")
 #   print(ANSWERS[i])
 #   print("=======================")
-  # zzzzzz
+  
 
 data = {"doubleArray": doubles_array, "doubleVariable": double_variable, "string": string}
 
